@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Umar Habib | Computer Science, LUMS</title>
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="icons/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="description" content="Umar Habib, B.S. Computer Science student at LUMS. Interests: networks, applied cryptography, security and privacy, distributed systems, robotics.">
+  <!-- Start downloading the three fonts used on first paint right away -->
+  <link rel="preload" href="fonts/Lora-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/Lora-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/Lora-Italic.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    // Always default to light; only use dark if the visitor chose it before.
+    try {
+      if (localStorage.getItem("theme") === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    } catch (e) {}
+  </script>
+  <style>
+    /* Latin-only subsets of Lora, served as WOFF2 and preloaded in <head>.
+       "block" hides text briefly instead of showing a fallback font. */
+    @font-face {
+      font-family: "Lora";
+      src: url("fonts/Lora-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Lora";
+      src: url("fonts/Lora-SemiBold.woff2") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Lora";
+      src: url("fonts/Lora-Italic.woff2") format("woff2");
+      font-weight: 400;
+      font-style: italic;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Lora";
+      src: url("fonts/Lora-SemiBoldItalic.woff2") format("woff2");
+      font-weight: 600;
+      font-style: italic;
+      font-display: block;
+    }
+
+    /* Light: warm sepia, similar to Apple Books' "Sepia" theme */
+    :root {
+      color-scheme: light;
+      --bg: #f8f1e3;
+      --panel: #f0e4cc;
+      --text: #4a3a2a;
+      --muted: #77634d;
+      --heading: #3a2b1d;
+      --border: #d8c6a3;
+      --link: #8a4b1f;
+      --link-hover: #5e3010;
+      --switch-off: #cdbb98;
+    }
+    /* Dark: warm brown night */
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #1f1a15;
+      --panel: #27201a;
+      --text: #e4d7c1;
+      --muted: #a89880;
+      --heading: #f1e6d2;
+      --border: #41362a;
+      --link: #dca468;
+      --link-hover: #f0c590;
+      --switch-off: #5a4c3b;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Lora", Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--bg);
+    }
+    strong, h1, h2, h3 { font-weight: 600; }
+    h1, h2, h3 { color: var(--heading); }
+    a { color: var(--link); }
+    a:hover { color: var(--link-hover); }
+    /* [1] / [2] references to the publications list: no underline */
+    a.ref { text-decoration: none; }
+
+    /* Desktop: fixed left column, content on the right */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 16rem;
+      box-sizing: border-box;
+      padding: 2rem 1.5rem;
+      overflow-y: auto;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+    }
+    .content {
+      margin-left: 16rem;
+      max-width: 48rem;
+      padding: 2rem 2rem 3rem;
+    }
+    .sidebar img {
+      display: block;
+      width: 10rem;
+      height: 10rem;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+    .sidebar h1 { margin: 0 0 0.5rem; font-size: 1.6rem; }
+    .sidebar p { margin: 0 0 0.75rem; }
+    .sidebar ul { list-style: none; padding: 0; margin: 0 0 1rem; }
+
+    .sidebar .icons { display: flex; align-items: center; gap: 0.9rem; margin: 0 0 1rem; }
+    .icons a { display: inline-flex; line-height: 0; }
+
+    /* iOS/macOS-style switch */
+    #theme-toggle {
+      position: relative;
+      flex: none;
+      width: 2.9rem;
+      height: 1.7rem;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: var(--switch-off);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    #theme-toggle .knob {
+      position: absolute;
+      top: 0.15rem;
+      left: 0.15rem;
+      width: 1.4rem;
+      height: 1.4rem;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c07a1c;
+      transition: transform 0.2s;
+    }
+    #theme-toggle svg { width: 0.95rem; height: 0.95rem; }
+    #theme-toggle .moon { display: none; }
+    :root[data-theme="dark"] #theme-toggle { background: var(--link); }
+    :root[data-theme="dark"] #theme-toggle .knob { transform: translateX(1.2rem); color: #4a3a2a; }
+    :root[data-theme="dark"] #theme-toggle .sun { display: none; }
+    :root[data-theme="dark"] #theme-toggle .moon { display: block; }
+    #theme-toggle:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      #theme-toggle, #theme-toggle .knob { transition: none; }
+    }
+
+    h2 {
+      margin-top: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.2rem;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .content section:first-child h2 { margin-top: 0; }
+    h3 { margin-bottom: 0.1rem; font-size: 1rem; }
+    .meta { margin: 0 0 0.4rem; color: var(--muted); }
+    /* Link with a small logo: the logo and the words always stay on the same line */
+    .yt-link { display: inline-flex; align-items: center; gap: 0.35rem; white-space: nowrap; vertical-align: baseline; }
+    .yt-logo { flex: none; width: 1.2em; height: 0.85em; }
+    ul { margin-top: 0.3rem; }
+
+    /* Coursework: grouped lists in columns on wide screens, one column on narrow ones */
+    .coursework { container-type: inline-size; }
+    .courses {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.25rem 1.25rem;
+      margin-top: 0.8rem;
+    }
+    /* Not enough room for four columns: 2 x 2 */
+    @container (max-width: 42.5rem) { .courses { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    /* Very narrow (phones): one column */
+    @container (max-width: 25rem) { .courses { grid-template-columns: 1fr; } }
+    .course-group h3 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+    .course-group ul { margin: 0; padding-left: 1.25rem; }
+    .course-group li { margin-bottom: 0.3rem; }
+    .course-group li:last-child { margin-bottom: 0; }
+    .course-group li::marker { color: var(--link); }
+    /* Publications numbered [1], [2] instead of bullets */
+    .pubs { list-style: none; padding: 0; margin: 0.3rem 0 0; counter-reset: pub; }
+    .pubs > li { position: relative; padding-left: 2.2rem; margin-bottom: 0.9rem; counter-increment: pub; scroll-margin-top: 1.5rem; }
+    .pubs > li::before {
+      content: "[" counter(pub) "]";
+      position: absolute;
+      left: 0;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    /* Publication key finding and pipeline figure (inline SVG, wide + tall versions) */
+    /* Venue line above a publication title, with a status badge */
+    .venue {
+      margin-bottom: 0.3rem;
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--heading);
+    }
+    .venue .status {
+      display: inline-block;
+      margin-left: 0.4rem;
+      padding: 0.05rem 0.55rem;
+      border: 1px solid var(--link);
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--link) 12%, var(--bg));
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: none;
+    }
+    .finding {
+      margin: 0.6rem 0 0.5rem;
+      padding: 0.6rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+    details.figure { margin: 0.4rem 0 0.2rem; }
+    details.figure > summary { cursor: pointer; color: var(--link); }
+    details.figure > summary:hover { color: var(--link-hover); }
+    /* Let the figure use the full content width, past the [1] number indent */
+    .diagram-wrap { container-type: inline-size; margin-left: -2.2rem; }
+    .diagram {
+      --dg-ink: var(--heading);
+      --dg-text: var(--text);
+      --dg-bg: var(--bg);
+      --dg-blue: var(--link);
+      --dg-lilac: #66703a;
+      --dg-chip: var(--panel);
+      --dg-chip-border: var(--border);
+      --dg-glow: rgba(74, 58, 42, 0.12);
+      margin: 0.6rem 0 0;
+      padding: 1rem 1rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      box-shadow: 0 6px 24px var(--dg-glow);
+    }
+    :root[data-theme="dark"] .diagram { --dg-lilac: #b4bd7a; --dg-glow: rgba(0, 0, 0, 0.35); }
+    .diagram figcaption { margin-top: 0.85rem; font-size: 0.82rem; color: var(--muted); }
+    .dg { display: block; width: 100%; height: auto; overflow: visible; }
+    .dg-tall { display: none; max-width: 360px; margin: 0 auto; }
+    /* Switch to the tall layout when the figure is too narrow for the wide one */
+    @container (max-width: 46rem) {
+      .dg-wide { display: none; }
+      .dg-tall { display: block; }
+    }
+    @media (max-width: 800px) { .diagram { padding: 0.9rem 0.75rem 0.7rem; } }
+    .dg text { font-family: "Lora", Georgia, "Times New Roman", serif; fill: var(--dg-ink); }
+    .dg .dg-t { font-size: 13px; font-weight: 500; }
+    .dg .dg-s { font-size: 11px; font-weight: 500; fill: var(--dg-text); }
+    .dg .dg-b { font-weight: 700; }
+    .dg .dg-i { font-style: italic; }
+    .dg .dg-h { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; }
+    .dg .dg-h-blue { fill: var(--dg-blue); }
+    .dg .dg-h-lilac { fill: var(--dg-lilac); }
+    .dg .dg-q-t { font-size: 12.5px; font-weight: 500; }
+    .dg .dg-mini { font-size: 7px; font-weight: 700; }
+    .dg .dg-note { font-size: 10.5px; font-weight: 500; }
+    .dg .dg-note.dg-b { font-weight: 700; }
+    .dg-box, .dg-q { fill: var(--dg-bg); stroke: color-mix(in srgb, var(--dg-ink) 22%, transparent); stroke-width: 1; }
+    .dg-q { stroke: color-mix(in srgb, var(--dg-lilac) 55%, transparent); }
+    .dg-chip, .dg-tile { fill: var(--dg-chip); stroke: var(--dg-chip-border); stroke-width: 1; }
+    .dg-kv { fill: color-mix(in srgb, var(--dg-blue) 14%, var(--dg-bg)); stroke: var(--dg-blue); stroke-width: 1.25; }
+    .dg-lora { fill: color-mix(in srgb, var(--dg-lilac) 16%, var(--dg-bg)); stroke: var(--dg-lilac); stroke-width: 1; }
+    .dg-stage-blue { fill: color-mix(in srgb, var(--dg-blue) 5%, transparent); stroke: color-mix(in srgb, var(--dg-blue) 35%, transparent); stroke-width: 1; }
+    .dg-stage-lilac { fill: color-mix(in srgb, var(--dg-lilac) 6%, transparent); stroke: color-mix(in srgb, var(--dg-lilac) 40%, transparent); stroke-width: 1; }
+    .dg-line { fill: none; stroke: color-mix(in srgb, var(--dg-ink) 45%, transparent); stroke-width: 1.25; }
+    .dg-head { fill: color-mix(in srgb, var(--dg-ink) 55%, transparent); }
+    .dg-play { fill: color-mix(in srgb, var(--dg-ink) 45%, transparent); }
+    .dg-track { fill: none; stroke: color-mix(in srgb, var(--dg-ink) 25%, transparent); stroke-width: 1; }
+    .dg-bar { fill: color-mix(in srgb, var(--dg-ink) 22%, transparent); }
+    .dg-dot { fill: color-mix(in srgb, var(--dg-ink) 30%, transparent); }
+    .dg-callout { stroke: var(--dg-lilac); stroke-width: 1.25; }
+    .dg-head-lilac { fill: var(--dg-lilac); }
+    /* Hive-Nav overview figure extras */
+    .dg .dg-xs { font-size: 9.5px; }
+    .dg .dg-rl { font-size: 8.5px; font-weight: 600; }
+    .dg .dg-bel { font-size: 9.5px; font-weight: 700; fill: var(--dg-lilac); }
+    .dg .dg-mini2 { font-size: 7.5px; font-weight: 600; }
+    .dg .dg-zi { font-style: italic; }
+    .dg .dg-zs { font-size: 70%; }
+    .dg .dg-mute { fill: var(--muted); }
+    .dg .dg-acc { fill: var(--dg-blue); }
+    .dg-stage-gray { fill: color-mix(in srgb, var(--dg-ink) 4%, transparent); stroke: color-mix(in srgb, var(--dg-ink) 25%, transparent); stroke-width: 1; }
+    .dg-flow { fill: none; stroke: var(--dg-blue); stroke-width: 1.5; }
+    .dg-head-blue { fill: var(--dg-blue); }
+    .dg-dash { stroke-dasharray: 4 3; }
+    /* Floor plan traced from the paper's map image */
+    .mp-white { fill: var(--dg-bg); }
+    .mp-room { fill-opacity: var(--rz-op); }
+    .mp-wall { fill: var(--dg-ink); stroke: var(--dg-ink); stroke-width: 1.2; stroke-linejoin: round; }
+    .diagram { --rz-op: 0.55; --rz1: #d08b8b; --rz2: #7fb5ae; --rz3: #a99bc4; --rz4: #a9c08a; --rz5: #cf9fb0; --rz6: #e2c565; }
+    :root[data-theme="dark"] .diagram { --rz-op: 0.38; }
+    .rz1 { fill: var(--rz1); } .rz2 { fill: var(--rz2); } .rz3 { fill: var(--rz3); }
+    .rz4 { fill: var(--rz4); } .rz5 { fill: var(--rz5); } .rz6 { fill: var(--rz6); }
+    .dg-rob1, .dg-fq1 { fill: #b0302a; } .dg-rob2, .dg-fq2 { fill: #1f7a78; } .dg-rob3, .dg-fq3 { fill: #cf7414; }
+    .dg-fq4 { fill: color-mix(in srgb, var(--dg-ink) 22%, transparent); }
+    .dg-robw { fill: #fff; }
+    .dg-beam { fill: #cc6600; fill-opacity: 0.3; }
+    .dg-beam-arc { fill: none; stroke: #cc6600; stroke-width: 2.9; }
+    .diagram { --ex-red: #a30000; }
+    :root[data-theme="dark"] .diagram { --ex-red: #f0928a; }
+    .dg-ex { fill: var(--dg-bg); stroke: color-mix(in srgb, var(--dg-ink) 32%, transparent); stroke-width: 1.2; stroke-dasharray: 6 4; }
+    .dg-tag { fill: var(--dg-bg); stroke: var(--ex-red); stroke-width: 0.8; }
+    .dg .dg-extext { fill: var(--ex-red); font-weight: 400; }
+    .dg .dg-excap { fill: var(--muted); font-style: italic; font-weight: 400; }
+
+    /* Mobile: sidebar becomes a normal block at the top of the page */
+    @media (max-width: 800px) {
+      .sidebar {
+        position: static;
+        width: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem 1rem;
+      }
+      .content {
+        margin-left: 0;
+        padding: 1rem 1rem 3rem;
+      }
+      /* Photo on the left, name and info on the right; the text drops
+         below the photo only if there isn't room for it beside it. */
+      .profile {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      .sidebar img {
+        width: 7rem;
+        height: 7rem;
+        margin-bottom: 0;
+      }
+      .profile-text {
+        flex: 1 1 12rem;
+        min-width: 0;
+      }
+      .sidebar h1 { font-size: 1.5rem; }
+      .profile-text p:last-child { margin-bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="profile">
+    <img src="profile.jpeg" alt="Photo of Umar Habib" width="160" height="160">
+    <div class="profile-text">
+      <h1>Umar Habib</h1>
+      <p>B.S. Computer Science<br>
+      Lahore University of Management Sciences (LUMS)<br>
+      Lahore, Pakistan</p>
+    </div>
+  </div>
+  <ul>
+    <li><a href="mailto:27100021@lums.edu.pk">27100021@lums.edu.pk</a></li>
+  </ul>
+  <div class="icons">
+    <a href="https://github.com/umr-1000/" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/umarhabibpk/" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <button id="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode" title="Toggle light / dark mode">
+    <span class="knob">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </span>
+    </button>
+  </div>
+</aside>
+
+<main class="content">
+
+<section id="about">
+  <h2>About Me</h2>
+  <p>I am a senior Computer Science student at LUMS (minor in Robotics) and a research assistant at the DAIS Lab. I work on networks, security and privacy, distributed systems and robotics, and I am looking for research opportunities in these areas.</p>
+</section>
+
+<section>
+  <h2>Education</h2>
+  <h3>Lahore University of Management Sciences (LUMS), 2023 – 2027</h3>
+  <p class="meta">B.S. Computer Science with a Minor in Robotics · CGPA: 3.65 · Major GPA: 3.83<br>
+  Dean's Honour List (2024–25, 2025–26)</p>
+</section>
+
+<section>
+  <h2>Research Interests</h2>
+  <p>Networks · Applied Cryptography · Security &amp; Privacy · Distributed Systems · Robotics</p>
+</section>
+
+<section>
+  <h2>Publications</h2>
+  <ol class="pubs">
+    <li id="pub-1">
+      <div class="venue">ACM Web Conference 2027 <span class="status">Under review</span></div>
+      <strong>Made with AI?: A First Large-Scale Measurement of AI Disclosure Labels on YouTube</strong><br>
+      Muhammad Abubakar Mughal, Muhammad Muiz Farhan, <strong>Umar Habib</strong>, Ihsan Ayyub Qazi, Zafar Ayyub Qazi
+      <p class="finding"><strong>Key finding:</strong> Made with AI labels appear on 3.84% of YouTube trending videos across 111 countries. These videos get 19.0% more views and reach 16.5% more countries, yet attract 47.7% fewer comments.</p>
+      <details class="figure">
+        <summary>Show study pipeline</summary>
+        <div class="diagram-wrap">
+          <figure class="diagram">
+            <svg class="dg dg-wide" viewBox="0 0 960 366" role="img" aria-label="System diagram of the Made with AI? measurement study: YouTube trending feeds in 111 countries and recommended videos are collected with the YouTube Data API and a Selenium scraper that reads the Made with AI and Auto-dubbed labels from video pages; the resulting dataset is analysed for prevalence, engagement, recommendations and viewer comments, and viewer comments are examined for how often viewers notice AI." xmlns="http://www.w3.org/2000/svg"><defs><marker id="mai-arrow-dg-wide" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-head" d="M0 0 L10 5 L0 10 z"/></marker><marker id="mai-callout-dg-wide" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-head-lilac" d="M0 0 L10 5 L0 10 z"/></marker></defs><rect class="dg-stage-blue" x="176" y="26" width="392" height="326" rx="14"/><rect class="dg-stage-lilac" x="598" y="26" width="362" height="326" rx="14"/><text class="dg-h" x="0" y="14">SOURCES</text><text class="dg-h dg-h-blue" x="192" y="50">COLLECTION</text><text class="dg-h dg-h-lilac" x="614" y="50">ANALYSIS</text><rect class="dg-box" x="0" y="62" width="150" height="108" rx="8"/><text class="dg-t dg-b" x="14" y="86">YouTube Trending</text><text class="dg-s" x="14" y="106">111 countries</text><text class="dg-s" x="14" y="122">two periods: 2025, 2026</text><rect class="dg-tile" x="14" y="136" width="15" height="15" rx="3"/><rect class="dg-tile" x="35" y="136" width="15" height="15" rx="3"/><rect class="dg-tile" x="56" y="136" width="15" height="15" rx="3"/><rect class="dg-tile" x="77" y="136" width="15" height="15" rx="3"/><rect class="dg-tile" x="98" y="136" width="15" height="15" rx="3"/><rect class="dg-tile" x="119" y="136" width="15" height="15" rx="3"/><rect class="dg-box" x="0" y="190" width="150" height="92" rx="8"/><text class="dg-t dg-b" x="14" y="214">Recommended</text><text class="dg-t dg-b" x="14" y="232">videos</text><text class="dg-s" x="14" y="254">suggestions alongside</text><text class="dg-s" x="14" y="269">trending videos</text><path class="dg-line" d="M150 116 H166"/><path class="dg-line" d="M150 236 H166"/><path class="dg-line" d="M166 103 V236"/><path class="dg-line" d="M166 103 H188" marker-end="url(#mai-arrow-dg-wide)"/><path class="dg-line" d="M166 210 H188" marker-end="url(#mai-arrow-dg-wide)"/><rect class="dg-box" x="190" y="66" width="192" height="74" rx="8"/><text class="dg-t dg-b" x="204" y="90">YouTube Data API v3</text><text class="dg-s" x="204" y="110">trending lists, metadata,</text><text class="dg-s" x="204" y="125">engagement</text><rect class="dg-box" x="190" y="152" width="192" height="190" rx="8"/><text class="dg-t dg-b" x="204" y="174">Selenium scraper</text><text class="dg-s" x="204" y="190">ChromeDriver, video pages</text><rect class="dg-box" x="204" y="198" width="152" height="96" rx="6"/><line class="dg-track" x1="204" y1="210" x2="356" y2="210"/><circle class="dg-dot" cx="212" cy="204" r="2"/><circle class="dg-dot" cx="218" cy="204" r="2"/><circle class="dg-dot" cx="224" cy="204" r="2"/><rect class="dg-chip" x="234" y="201" width="114" height="6" rx="3"/><rect class="dg-tile" x="212" y="216" width="90" height="50" rx="4"/><path class="dg-play" d="M253 235 l10 6 l-10 6 z"/><rect class="dg-tile" x="308" y="216" width="18" height="13" rx="2"/><rect class="dg-bar" x="329" y="218" width="19" height="3.5" rx="1.75"/><rect class="dg-bar" x="329" y="224" width="12" height="3.5" rx="1.75"/><rect class="dg-tile" x="308" y="233" width="18" height="13" rx="2"/><rect class="dg-bar" x="329" y="235" width="19" height="3.5" rx="1.75"/><rect class="dg-bar" x="329" y="241" width="12" height="3.5" rx="1.75"/><rect class="dg-tile" x="308" y="250" width="18" height="13" rx="2"/><rect class="dg-bar" x="329" y="252" width="19" height="3.5" rx="1.75"/><rect class="dg-bar" x="329" y="258" width="12" height="3.5" rx="1.75"/><rect class="dg-bar" x="212" y="271" width="74" height="4" rx="2"/><rect class="dg-lora" x="212" y="279" width="58" height="11" rx="5.5"/><text class="dg-mini" x="241" y="287" text-anchor="middle">Made with AI</text><text class="dg-note dg-b" x="204" y="314">Disclosure label</text><text class="dg-note" x="204" y="329">not available through the API</text><path class="dg-line dg-callout" d="M296 309 C 306 296, 292 284.5, 273 284.5" marker-end="url(#mai-callout-dg-wide)"/><rect class="dg-box" x="404" y="66" width="150" height="276" rx="10"/><text class="dg-t dg-b" x="416" y="90">Dataset</text><text class="dg-q-t" x="416" y="116"><tspan class="dg-b">5.2M+</tspan> entries</text><text class="dg-q-t" x="416" y="138"><tspan class="dg-b">680K+</tspan> unique videos</text><text class="dg-q-t" x="416" y="160"><tspan class="dg-b">270K+</tspan> recommended</text><line class="dg-track" x1="416" y1="176" x2="542" y2="176"/><text class="dg-s" x="416" y="202">Disclosure labels</text><rect class="dg-lora" x="416" y="214" width="108" height="26" rx="13"/><text class="dg-s dg-b" x="470" y="231" text-anchor="middle">Made with AI</text><rect class="dg-kv" x="416" y="250" width="108" height="26" rx="13"/><text class="dg-s dg-b" x="470" y="267" text-anchor="middle">Auto-dubbed</text><path class="dg-line" d="M382 103 H392 V204 H402" marker-end="url(#mai-arrow-dg-wide)"/><path class="dg-line" d="M382 247 H392 V204"/><path class="dg-line" d="M554 204 H578"/><path class="dg-line" d="M578 94 V292"/><path class="dg-line" d="M578 94 H612" marker-end="url(#mai-arrow-dg-wide)"/><rect class="dg-q" x="614" y="66" width="330" height="58" rx="8"/><text class="dg-t dg-b" x="628" y="85">Prevalence</text><text class="dg-s" x="628" y="102"><tspan class="dg-b">3.84%</tspan> carry the Made with AI label</text><text class="dg-s" x="628" y="117">roughly doubled in 2026: <tspan class="dg-b">2.3%</tspan> to <tspan class="dg-b">4.9%</tspan></text><path class="dg-line" d="M578 160 H612" marker-end="url(#mai-arrow-dg-wide)"/><rect class="dg-q" x="614" y="132" width="330" height="58" rx="8"/><text class="dg-t dg-b" x="628" y="151">Engagement</text><text class="dg-s" x="628" y="168"><tspan class="dg-b">+19%</tspan> views · <tspan class="dg-b">+16.5%</tspan> countries</text><text class="dg-s" x="628" y="183"><tspan class="dg-b">−47.7%</tspan> comments</text><path class="dg-line" d="M578 226 H612" marker-end="url(#mai-arrow-dg-wide)"/><rect class="dg-q" x="614" y="198" width="330" height="58" rx="8"/><text class="dg-t dg-b" x="628" y="217">Recommendations</text><text class="dg-s" x="628" y="234"><tspan class="dg-b">~5%</tspan> of suggestions carry a label</text><text class="dg-s" x="628" y="249">recommendations alone do not amplify them</text><path class="dg-line" d="M578 292 H612" marker-end="url(#mai-arrow-dg-wide)"></path><rect class="dg-q" x="614" y="264" width="330" height="58" rx="8"></rect><text class="dg-t dg-b" x="628" y="283">Viewer comments</text><text class="dg-s" x="628" y="300"><tspan class="dg-b">6×</tspan> as many comments say or suspect AI</text><text class="dg-s" x="628" y="315">than controls, yet <tspan class="dg-b">95%</tspan> never mention it</text></svg>
+            <svg class="dg dg-tall" viewBox="0 0 340 978" role="img" aria-label="System diagram of the Made with AI? measurement study: YouTube trending feeds in 111 countries and recommended videos are collected with the YouTube Data API and a Selenium scraper that reads the Made with AI and Auto-dubbed labels from video pages; the resulting dataset is analysed for prevalence, engagement, recommendations and viewer comments, and viewer comments are examined for how often viewers notice AI." xmlns="http://www.w3.org/2000/svg"><defs><marker id="mai-arrow-dg-tall" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-head" d="M0 0 L10 5 L0 10 z"/></marker><marker id="mai-callout-dg-tall" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-head-lilac" d="M0 0 L10 5 L0 10 z"/></marker></defs><text class="dg-h" x="0" y="14">SOURCES</text><rect class="dg-box" x="0" y="24" width="164" height="84" rx="8"/><text class="dg-t dg-b" x="12" y="46">YouTube Trending</text><text class="dg-s" x="12" y="66">111 countries</text><text class="dg-s" x="12" y="82">2025 and 2026</text><rect class="dg-box" x="176" y="24" width="164" height="84" rx="8"/><text class="dg-t dg-b" x="188" y="46">Recommended videos</text><text class="dg-s" x="188" y="66">suggestions alongside</text><text class="dg-s" x="188" y="82">trending videos</text><path class="dg-line" d="M170 110 V132" marker-end="url(#mai-arrow-dg-tall)"/><rect class="dg-stage-blue" x="0" y="136" width="340" height="480" rx="14"/><text class="dg-h dg-h-blue" x="14" y="158">COLLECTION</text><rect class="dg-box" x="14" y="170" width="312" height="56" rx="8"/><text class="dg-t dg-b" x="26" y="192">YouTube Data API v3</text><text class="dg-s" x="26" y="211">trending lists, metadata, engagement</text><rect class="dg-box" x="14" y="236" width="312" height="160" rx="8"/><text class="dg-t dg-b" x="26" y="258">Selenium scraper</text><text class="dg-s" x="26" y="274">ChromeDriver, video pages</text><rect class="dg-box" x="26" y="286" width="152" height="96" rx="6"/><line class="dg-track" x1="26" y1="298" x2="178" y2="298"/><circle class="dg-dot" cx="34" cy="292" r="2"/><circle class="dg-dot" cx="40" cy="292" r="2"/><circle class="dg-dot" cx="46" cy="292" r="2"/><rect class="dg-chip" x="56" y="289" width="114" height="6" rx="3"/><rect class="dg-tile" x="34" y="304" width="90" height="50" rx="4"/><path class="dg-play" d="M75 323 l10 6 l-10 6 z"/><rect class="dg-tile" x="130" y="304" width="18" height="13" rx="2"/><rect class="dg-bar" x="151" y="306" width="19" height="3.5" rx="1.75"/><rect class="dg-bar" x="151" y="312" width="12" height="3.5" rx="1.75"/><rect class="dg-tile" x="130" y="321" width="18" height="13" rx="2"/><rect class="dg-bar" x="151" y="323" width="19" height="3.5" rx="1.75"/><rect class="dg-bar" x="151" y="329" width="12" height="3.5" rx="1.75"/><rect class="dg-tile" x="130" y="338" width="18" height="13" rx="2"/><rect class="dg-bar" x="151" y="340" width="19" height="3.5" rx="1.75"/><rect class="dg-bar" x="151" y="346" width="12" height="3.5" rx="1.75"/><rect class="dg-bar" x="34" y="359" width="74" height="4" rx="2"/><rect class="dg-lora" x="34" y="367" width="58" height="11" rx="5.5"/><text class="dg-mini" x="63" y="375" text-anchor="middle">Made with AI</text><text class="dg-note dg-b" x="196" y="336">Disclosure label</text><text class="dg-note" x="196" y="351">not available</text><text class="dg-note" x="196" y="365">through the API</text><path class="dg-line dg-callout" d="M192 340 C 182 340, 180 372.5, 95 372.5" marker-end="url(#mai-callout-dg-tall)"/><path class="dg-line" d="M170 396 V420" marker-end="url(#mai-arrow-dg-tall)"/><rect class="dg-box" x="14" y="424" width="312" height="178" rx="10"/><text class="dg-t dg-b" x="26" y="446">Dataset</text><text class="dg-t" x="26" y="470"><tspan class="dg-b">5.2M+</tspan> trending entries</text><text class="dg-t" x="26" y="492"><tspan class="dg-b">680K+</tspan> unique videos</text><text class="dg-t" x="26" y="514"><tspan class="dg-b">270K+</tspan> recommended videos</text><line class="dg-track" x1="26" y1="530" x2="314" y2="530"/><text class="dg-s" x="26" y="550">Disclosure labels</text><rect class="dg-lora" x="26" y="560" width="108" height="26" rx="13"/><text class="dg-s dg-b" x="80" y="577" text-anchor="middle">Made with AI</text><rect class="dg-kv" x="142" y="560" width="108" height="26" rx="13"/><text class="dg-s dg-b" x="196" y="577" text-anchor="middle">Auto-dubbed</text><path class="dg-line" d="M170 616 V640" marker-end="url(#mai-arrow-dg-tall)"/><rect class="dg-stage-lilac" x="0" y="644" width="340" height="334" rx="14"/><text class="dg-h dg-h-lilac" x="14" y="666">ANALYSIS</text><rect class="dg-q" x="14" y="678" width="312" height="64" rx="8"/><text class="dg-t dg-b" x="26" y="698">Prevalence</text><text class="dg-s" x="26" y="716"><tspan class="dg-b">3.84%</tspan> carry the Made with AI label</text><text class="dg-s" x="26" y="732">roughly doubled in 2026: <tspan class="dg-b">2.3%</tspan> to <tspan class="dg-b">4.9%</tspan></text><rect class="dg-q" x="14" y="752" width="312" height="64" rx="8"/><text class="dg-t dg-b" x="26" y="772">Engagement</text><text class="dg-s" x="26" y="790"><tspan class="dg-b">+19%</tspan> views · <tspan class="dg-b">+16.5%</tspan> countries</text><text class="dg-s" x="26" y="806"><tspan class="dg-b">−47.7%</tspan> comments</text><rect class="dg-q" x="14" y="826" width="312" height="64" rx="8"/><text class="dg-t dg-b" x="26" y="846">Recommendations</text><text class="dg-s" x="26" y="864"><tspan class="dg-b">~5%</tspan> of suggestions carry a label</text><text class="dg-s" x="26" y="880">recommendations alone do not amplify them</text><rect class="dg-q" x="14" y="900" width="312" height="64" rx="8"></rect><text class="dg-t dg-b" x="26" y="920">Viewer comments</text><text class="dg-s" x="26" y="938"><tspan class="dg-b">6×</tspan> as many comments say or suspect AI</text><text class="dg-s" x="26" y="954">than controls, yet <tspan class="dg-b">95%</tspan> never mention it</text></svg>
+            <figcaption>Measurement pipeline: trending feeds and recommendations are collected across 111 countries, labels are read from video pages, and the dataset is analysed.</figcaption>
+          </figure>
+        </div>
+      </details>
+    </li>
+    <li id="pub-2">
+      <div class="venue">IEEE ICRA 2027 <span class="status">Under review</span></div>
+      <strong>Hive-Nav: Belief-Guided Multi-Robot Room Classification and Open-Vocabulary Object Search</strong><br>
+      Muhammad Hussain Habib Chaudhry*, <strong>Umar Habib</strong>*, Hassan Jaleel
+      <p class="finding"><strong>Key finding:</strong> Fusing evidence across frames and robots raised real-world room-classification accuracy from 88.3% (single robot, single visit) to 98.3% with three robots, and all 15 physical search trials succeeded.</p>
+      <details class="figure">
+        <summary>Show system overview</summary>
+        <div class="diagram-wrap">
+          <figure class="diagram">
+            <svg class="dg-defs" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><defs><g id="hn-map"><path class="mp-white" d="M14.5 260.0V311.5H24.5L25.0 322.0H76.0L76.5 312.0H150.5L151.0 336.5H207.5L208.0 312.0H549.5L550.0 336.5H607.0L607.5 311.5H882.5L883.0 336.5H941.5L942.0 310.5H1014.0L1014.5 322.5H1066.0L1066.5 310.5H1080.0V260.5H1066.5L1066.0 249.0H1015.0L1014.5 260.5H943.0L942.5 237.5H882.5L882.0 260.5H607.5L607.0 237.5H550.0L549.5 260.5H208.0L207.5 237.5H151.5L151.0 260.5H77.0L76.5 249.0H25.0V259.5Z"></path><path class="mp-room rz2" d="M24.0 14.5V158.0H150.5L151.0 237.0H164.0L164.5 240.5H194.5L195.0 237.0H208.0V159.5L209.0 158.5H415.5V14.5Z"></path><path class="mp-room rz4" d="M415.5 62.0V158.5H549.0L549.5 237.0H562.5L563.0 240.5H594.0L594.5 237.0H607.5L608.0 159.5H676.5V62.0Z"></path><path class="mp-room rz6" d="M676.5 14.0V159.5H881.5L882.0 237.0H895.0L895.5 240.5H930.0L930.5 237.0H943.0V14.0Z"></path><path class="mp-room rz1" d="M150.5 337.0V558.5H415.0V413.5H208.5L208.0 333.5H164.0L163.5 337.0Z"></path><path class="mp-room rz3" d="M678.0 337.0H594.5L594.0 335.0L595.5 334.5V330.5H591.5L591.0 333.5H563.0L562.5 337.0H549.5L549.0 413.5H415.0V508.5H678.0Z"></path><path class="mp-room rz5" d="M1067.0 413.5H942.5L942.0 337.0H929.0L928.5 333.5L930.5 333.0V329.0H926.5L926.0 333.5H896.0L895.5 337.0H882.5L882.0 414.0H678.0V561.0H1067.0Z"></path><path class="mp-wall" fill-rule="evenodd" d="M1082.0 258.5H1068.5L1068.0 258.0V247.0H1013.0V258.0L1012.5 258.5H945.0L944.5 258.0V12.5H675.0V60.0L674.5 60.5H417.5L417.0 60.0V13.0H23.0L22.5 13.5V159.5H149.0L149.5 160.0V258.0L149.0 258.5H79.0L78.5 258.0V247.0H23.0V257.5L22.5 258.0H12.5V313.5H22.5L23.0 314.0V324.0H78.0V314.5L78.5 314.0H148.5L149.0 314.5V560.0H416.5V510.5L417.0 510.0H676.0L676.5 510.5V562.5H1068.5V412.0H944.0L943.5 411.5V313.0L944.0 312.5H1012.0L1012.5 313.0V324.5H1068.0V313.0L1068.5 312.5H1082.0ZM209.5 314.5L210.0 314.0H547.5L548.0 314.5V411.5L547.5 412.0H210.0L209.5 411.5ZM609.0 314.0L609.5 313.5H880.5L881.0 314.0V412.0L880.5 412.5H680.0L679.5 412.0V335.5H609.5L609.0 335.0ZM609.0 161.5L609.5 161.0H880.0L880.5 161.5V258.0L880.0 258.5H609.5L609.0 258.0ZM209.5 160.5L210.0 160.0H547.5L548.0 160.5V258.0L547.5 258.5H210.0L209.5 258.0ZM1079.0 262.0V309.0L1078.5 309.5H1065.0V321.0L1064.5 321.5H1016.0L1015.5 321.0V309.5H940.5V335.0L940.0 335.5H929.5L929.0 335.0L936.0 316.5L934.5 315.5L929.0 331.5L927.0 335.5V338.5H940.0L940.5 339.0V415.0H1065.0L1065.5 415.5V559.0L1065.0 559.5H680.0L679.5 559.0V416.0L680.0 415.5H884.0V339.0L884.5 338.5H897.5V335.5H884.5L884.0 335.0V310.5H606.0V335.0L605.5 335.5H595.0L594.5 335.0L601.5 316.5L600.0 315.5L594.5 331.5L592.5 335.5V338.5H676.0L676.5 339.0V506.5L676.0 507.0H417.0L416.5 506.5V415.5L417.0 415.0H551.0V339.0L551.5 338.5H564.5V335.5H551.5L551.0 335.0V311.0H206.5V335.5L206.0 336.0H195.5L195.0 335.5L202.0 316.5L200.5 315.5L193.0 336.0V339.0H206.0L206.5 339.5V415.0H413.0L413.5 415.5V556.5L413.0 557.0H152.5L152.0 556.5V339.0L152.5 338.5H165.5V335.5H152.5L152.0 335.0V311.0H75.0V320.5L74.5 321.0H26.5L26.0 320.5V310.5H16.0L15.5 310.0V261.5L16.0 261.0H26.0V250.5L26.5 250.0H75.0L75.5 250.5V261.5H152.5V239.0L153.0 238.5H163.5L164.0 240.0L157.0 258.5L158.5 259.5L166.0 239.0V235.5H153.0L152.5 235.0V156.5H26.0L25.5 156.0V16.5L26.0 16.0H413.5L414.0 16.5V156.5L413.5 157.0H207.0L206.5 157.5V235.0L206.0 235.5H193.0V238.5H206.0L206.5 239.0V261.5H551.0V239.0L551.5 238.5H562.0L562.5 240.0L555.5 258.5L557.0 259.5L564.5 239.0V235.5H551.5L551.0 235.0V157.0H417.5L417.0 156.5V64.0L417.5 63.5H674.5L675.0 64.0V157.5L674.5 158.0H606.0V235.0L605.5 235.5H592.5V238.5H605.5L606.0 239.0V261.5H883.5V239.0L884.0 238.5H894.5L895.0 239.0L888.0 258.5L889.0 259.5L890.0 258.5L897.0 239.0V235.5H884.0L883.5 235.0V158.0H678.5L678.0 157.5V16.0L678.5 15.5H941.0L941.5 16.0V235.0L941.0 235.5H928.5V238.5H941.0L941.5 239.0V261.5H1016.0V250.5L1016.5 250.0H1064.5L1065.0 250.5V261.5H1078.5Z"></path></g></defs></svg>
+            <svg class="dg dg-wide" viewBox="0 0 960 330" role="img" aria-label="System overview of Hive-Nav: robots visit rooms in a physical environment and send frames to a central GPU server, where Qwen3-VL-4B object inventories are turned into signed evidence scores and fused into per-room beliefs on a shared semantic map; in Phase 2 the map ranks rooms for an open-vocabulary object search that detects, confirms and approaches the target." xmlns="http://www.w3.org/2000/svg"><defs><marker id="hn-arrow-wide" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-head" d="M0 0 L10 5 L0 10 z"></path></marker><marker id="hn-flow-wide" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-head-blue" d="M0 0 L10 5 L0 10 z"></path></marker></defs><rect class="dg-stage-blue" x="0" y="0" width="300" height="324" rx="14"></rect><rect class="dg-stage-gray" x="329" y="0" width="270" height="324" rx="14"></rect><rect class="dg-stage-lilac" x="640" y="0" width="320" height="164" rx="14"></rect><rect class="dg-stage-blue" x="640" y="186" width="320" height="138" rx="14"></rect><text class="dg-h dg-h-blue" x="16" y="24">PHYSICAL ENVIRONMENT</text><text class="dg-xs dg-i dg-acc" x="284" y="46" text-anchor="end">on-demand frames</text><use href="#hn-map" transform="translate(16 56) scale(0.24475)"></use><g transform="translate(16 56) scale(0.24475)"><path class="dg-beam" d="M975.5 460.3L1034.4 460.3A58.9 58.9 0 0 1 1028.4 486.1Z"></path><path class="dg-beam" d="M975.5 460.3L1026.0 490.6A58.9 58.9 0 0 1 1005.8 510.8Z"></path><path class="dg-beam" d="M975.5 460.3L1001.3 513.2A58.9 58.9 0 0 1 975.5 519.2Z"></path><path class="dg-beam-arc" d="M1051.5 464.3A76.1 76.1 0 0 1 1045.6 490.0"></path><path class="dg-beam-arc" d="M1035.5 507.2A76.1 76.1 0 0 1 1015.8 524.8"></path><path class="dg-beam-arc" d="M992.6 534.5A76.1 76.1 0 0 1 968.9 536.1"></path></g><text class="dg-rl" x="69.4" y="81.8" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">2</tspan><tspan dy="-2"> Workshop</tspan></text><text class="dg-rl" x="150" y="87.6" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">4</tspan><tspan dy="-2"> Office B</tspan></text><text class="dg-rl" x="213.2" y="81.9" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">6</tspan><tspan dy="-2"> Comm.</tspan></text><text class="dg-rl" x="82.8" y="179.5" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">1</tspan><tspan dy="-2"> Robotics</tspan></text><text class="dg-rl" x="150" y="172.4" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">3</tspan><tspan dy="-2"> Office A</tspan></text><text class="dg-rl" x="217.2" y="179.5" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">5</tspan><tspan dy="-2"> Power Sys.</tspan></text><circle class="dg-rob1" cx="60.6" cy="126.1" r="4.7"></circle><circle class="dg-robw" cx="60.6" cy="126.1" r="1.7"></circle><circle class="dg-rob2" cx="157.5" cy="126.1" r="4.7"></circle><circle class="dg-robw" cx="157.5" cy="126.1" r="1.7"></circle><circle class="dg-rob3" cx="254.8" cy="168.7" r="5.1"></circle><circle class="dg-robw" cx="254.8" cy="168.7" r="1.7"></circle><text class="dg-s" x="150" y="228" text-anchor="middle">Each room is visited by</text><text class="dg-s" x="150" y="243" text-anchor="middle">two robots (nearest-first);</text><text class="dg-s" x="150" y="258" text-anchor="middle">disagreement triggers a third visit.</text><rect class="dg-kv" x="40" y="276" width="220" height="26" rx="13"></rect><text class="dg-s dg-b" x="150" y="293" text-anchor="middle">PHASE 1 · Semantic Room Mapping</text><path class="dg-flow" d="M300 50 H343" marker-end="url(#hn-flow-wide)"></path><path class="dg-line dg-dash" d="M329 120 H303" marker-end="url(#hn-arrow-wide)"></path><text class="dg-xs dg-mute" x="0" y="0" text-anchor="middle" transform="translate(318 200) rotate(-90)">nav goals, spin cmds</text><text class="dg-h" x="345" y="24">CENTRAL GPU SERVER</text><rect class="dg-box" x="345" y="36" width="238" height="28" rx="6"></rect><text class="dg-s" x="357" y="54">frame queue</text><rect class="dg-fq1" x="480" y="44" width="20" height="12" rx="2"></rect><rect class="dg-fq2" x="506" y="44" width="20" height="12" rx="2"></rect><rect class="dg-fq3" x="532" y="44" width="20" height="12" rx="2"></rect><rect class="dg-fq4" x="558" y="44" width="20" height="12" rx="2"></rect><path class="dg-line" d="M464 64 V76" marker-end="url(#hn-arrow-wide)"></path><rect class="dg-box" x="345" y="78" width="238" height="50" rx="6"></rect><text class="dg-s dg-b" x="464" y="98" text-anchor="middle">Qwen3-VL-4B: object inventory</text><text class="dg-note dg-i" x="464" y="116" text-anchor="middle">“drill press, workbench, fume hood, stool…”</text><path class="dg-line" d="M464 128 V140" marker-end="url(#hn-arrow-wide)"></path><rect class="dg-box" x="345" y="142" width="238" height="50" rx="6"></rect><text class="dg-s dg-b" x="464" y="162" text-anchor="middle">Evidence table: signed scores</text><text class="dg-note" x="464" y="180" text-anchor="middle">“drill press” maps to Workshop +9.0</text><path class="dg-line" d="M464 192 V204" marker-end="url(#hn-arrow-wide)"></path><rect class="dg-q" x="345" y="206" width="238" height="70" rx="8"></rect><text class="dg-s dg-b" x="464" y="226" text-anchor="middle">Belief fusion &amp; commitment</text><text class="dg-note" x="464" y="246" text-anchor="middle">log-evidence fused into <tspan class="dg-zi">B</tspan><tspan class="dg-zs" dy="2">z</tspan><tspan dy="-2">(c);</tspan></text><text class="dg-note" x="464" y="262" text-anchor="middle">commit on conf, margin, views</text><text class="dg-note dg-mute" x="464" y="298" text-anchor="middle">A single shared GPU serializes all VLM</text><text class="dg-note dg-mute" x="464" y="312" text-anchor="middle">and detector inference for the whole team.</text><path class="dg-flow" d="M583 241 H622 V96 H638" marker-end="url(#hn-flow-wide)"></path><text class="dg-xs dg-mute" x="0" y="0" text-anchor="middle" transform="translate(611 166) rotate(-90)">committed <tspan class="dg-zi">B</tspan><tspan class="dg-zs" dy="2">z</tspan><tspan dy="-2"></tspan></text><text class="dg-h dg-h-lilac" x="656" y="24">SHARED SEMANTIC ROOM MAP</text><use href="#hn-map" transform="translate(686 36) scale(0.20822)"></use><text class="dg-bel" x="731.4" y="58.5" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">2</tspan><tspan dy="-2">: 0.89</tspan></text><text class="dg-bel" x="800" y="63.3" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">4</tspan><tspan dy="-2">: 0.67</tspan></text><text class="dg-bel" x="853.7" y="58.5" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">6</tspan><tspan dy="-2">: 0.70</tspan></text><text class="dg-bel" x="742.8" y="141.6" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">1</tspan><tspan dy="-2">: 0.73</tspan></text><text class="dg-bel" x="800" y="135.5" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">3</tspan><tspan dy="-2">: 0.55</tspan></text><text class="dg-bel" x="868.6" y="141.6" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">5</tspan><tspan dy="-2">: 0.82</tspan></text><path class="dg-flow" d="M700 164 V218" marker-end="url(#hn-flow-wide)"></path><text class="dg-xs dg-i dg-acc" x="712" y="179">belief-guided ranking</text><text class="dg-h dg-h-blue" x="944" y="208" text-anchor="end">PHASE 2 · OBJECT SEARCH</text><rect class="dg-box" x="656" y="220" width="88" height="38" rx="6"></rect><text class="dg-note" x="700" y="236" text-anchor="middle">rank rooms by</text><text class="dg-note" x="700" y="250" text-anchor="middle"><tspan class="dg-zi">B</tspan><tspan class="dg-zs" dy="2">z</tspan><tspan dy="-2"> + query q</tspan></text><path class="dg-line" d="M744 239 H756" marker-end="url(#hn-arrow-wide)"></path><rect class="dg-box" x="758" y="220" width="80" height="38" rx="6"></rect><text class="dg-note" x="798" y="236" text-anchor="middle">coverage</text><text class="dg-note" x="798" y="250" text-anchor="middle">viewpoints</text><path class="dg-line" d="M838 239 H850" marker-end="url(#hn-arrow-wide)"></path><rect class="dg-kv" x="852" y="220" width="92" height="38" rx="6"></rect><text class="dg-note dg-b" x="898" y="236" text-anchor="middle">YOLOE detect</text><text class="dg-note" x="898" y="250" text-anchor="middle">(shared GPU)</text><path class="dg-line" d="M898 258 V264 H798 V276" marker-end="url(#hn-arrow-wide)"></path><rect class="dg-box" x="758" y="278" width="80" height="38" rx="6"></rect><text class="dg-note" x="798" y="294" text-anchor="middle">multi-frame</text><text class="dg-note" x="798" y="308" text-anchor="middle">confirm</text><path class="dg-line" d="M758 297 H746" marker-end="url(#hn-arrow-wide)"></path><rect class="dg-box" x="656" y="278" width="88" height="38" rx="6"></rect><text class="dg-note" x="700" y="294" text-anchor="middle">approach</text><text class="dg-note" x="700" y="308" text-anchor="middle">&amp; stop</text><rect class="dg-ex" x="869" y="270" width="74" height="40" rx="2.9"></rect><rect class="dg-tag" x="891.9" y="279.8" width="28.3" height="22.8"></rect><text class="dg-extext" style="font-size:10px" x="906" y="294.5" text-anchor="middle">drill</text><text class="dg-excap" style="font-size:9px" x="906" y="321.2" text-anchor="middle">example detection</text></svg>
+            <svg class="dg dg-tall" viewBox="0 0 340 1208" role="img" aria-label="System overview of Hive-Nav: robots visit rooms in a physical environment and send frames to a central GPU server, where Qwen3-VL-4B object inventories are turned into signed evidence scores and fused into per-room beliefs on a shared semantic map; in Phase 2 the map ranks rooms for an open-vocabulary object search that detects, confirms and approaches the target." xmlns="http://www.w3.org/2000/svg"><defs><marker id="hn-arrow-tall" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-head" d="M0 0 L10 5 L0 10 z"></path></marker><marker id="hn-flow-tall" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="dg-head-blue" d="M0 0 L10 5 L0 10 z"></path></marker></defs><rect class="dg-stage-blue" x="0" y="0" width="340" height="316" rx="14"></rect><rect class="dg-stage-gray" x="0" y="348" width="340" height="326" rx="14"></rect><rect class="dg-stage-lilac" x="0" y="704" width="340" height="208" rx="14"></rect><rect class="dg-stage-blue" x="0" y="942" width="340" height="262" rx="14"></rect><text class="dg-h dg-h-blue" x="14" y="22">PHYSICAL ENVIRONMENT</text><use href="#hn-map" transform="translate(22 40) scale(0.26941)"></use><g transform="translate(22 40) scale(0.26941)"><path class="dg-beam" d="M975.5 460.3L1034.4 460.3A58.9 58.9 0 0 1 1028.4 486.1Z"></path><path class="dg-beam" d="M975.5 460.3L1026.0 490.6A58.9 58.9 0 0 1 1005.8 510.8Z"></path><path class="dg-beam" d="M975.5 460.3L1001.3 513.2A58.9 58.9 0 0 1 975.5 519.2Z"></path><path class="dg-beam-arc" d="M1051.5 464.3A76.1 76.1 0 0 1 1045.6 490.0"></path><path class="dg-beam-arc" d="M1035.5 507.2A76.1 76.1 0 0 1 1015.8 524.8"></path><path class="dg-beam-arc" d="M992.6 534.5A76.1 76.1 0 0 1 968.9 536.1"></path></g><text class="dg-rl" x="80.8" y="68.1" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">2</tspan><tspan dy="-2"> Workshop</tspan></text><text class="dg-rl" x="169.5" y="74.4" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">4</tspan><tspan dy="-2"> Office B</tspan></text><text class="dg-rl" x="239" y="68.2" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">6</tspan><tspan dy="-2"> Comm.</tspan></text><text class="dg-rl" x="95.5" y="175.7" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">1</tspan><tspan dy="-2"> Robotics</tspan></text><text class="dg-rl" x="169.5" y="167.9" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">3</tspan><tspan dy="-2"> Office A</tspan></text><text class="dg-rl" x="243.5" y="175.7" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">5</tspan><tspan dy="-2"> Power Sys.</tspan></text><circle class="dg-rob1" cx="71.1" cy="117.2" r="5.1"></circle><circle class="dg-robw" cx="71.1" cy="117.2" r="1.8"></circle><circle class="dg-rob2" cx="177.8" cy="117.2" r="5.1"></circle><circle class="dg-robw" cx="177.8" cy="117.2" r="1.8"></circle><circle class="dg-rob3" cx="284.8" cy="164.0" r="5.6"></circle><circle class="dg-robw" cx="284.8" cy="164.0" r="1.8"></circle><text class="dg-s" x="170" y="222" text-anchor="middle">Each room is visited by</text><text class="dg-s" x="170" y="237" text-anchor="middle">two robots (nearest-first);</text><text class="dg-s" x="170" y="252" text-anchor="middle">disagreement triggers a third visit.</text><rect class="dg-kv" x="60" y="270" width="220" height="26" rx="13"></rect><text class="dg-s dg-b" x="170" y="287" text-anchor="middle">PHASE 1 · Semantic Room Mapping</text><path class="dg-flow" d="M230 316 V344" marker-end="url(#hn-flow-tall)"></path><text class="dg-xs dg-i dg-acc" x="238" y="334">on-demand frames</text><path class="dg-line dg-dash" d="M110 344 V318" marker-end="url(#hn-arrow-tall)"></path><text class="dg-xs dg-mute" x="102" y="334" text-anchor="end">nav goals, spin cmds</text><text class="dg-h" x="14" y="370">CENTRAL GPU SERVER</text><rect class="dg-box" x="14" y="384" width="312" height="28" rx="6"></rect><text class="dg-s" x="26" y="402">frame queue</text><rect class="dg-fq1" x="206" y="392" width="20" height="12" rx="2"></rect><rect class="dg-fq2" x="232" y="392" width="20" height="12" rx="2"></rect><rect class="dg-fq3" x="258" y="392" width="20" height="12" rx="2"></rect><rect class="dg-fq4" x="284" y="392" width="20" height="12" rx="2"></rect><path class="dg-line" d="M170 412 V424" marker-end="url(#hn-arrow-tall)"></path><rect class="dg-box" x="14" y="426" width="312" height="50" rx="6"></rect><text class="dg-s dg-b" x="170" y="446" text-anchor="middle">Qwen3-VL-4B: object inventory</text><text class="dg-note dg-i" x="170" y="464" text-anchor="middle">“drill press, workbench, fume hood, stool…”</text><path class="dg-line" d="M170 476 V488" marker-end="url(#hn-arrow-tall)"></path><rect class="dg-box" x="14" y="490" width="312" height="50" rx="6"></rect><text class="dg-s dg-b" x="170" y="510" text-anchor="middle">Evidence table: signed scores</text><text class="dg-note" x="170" y="528" text-anchor="middle">“drill press” maps to Workshop +9.0</text><path class="dg-line" d="M170 540 V552" marker-end="url(#hn-arrow-tall)"></path><rect class="dg-q" x="14" y="554" width="312" height="70" rx="8"></rect><text class="dg-s dg-b" x="170" y="574" text-anchor="middle">Belief fusion &amp; commitment</text><text class="dg-note" x="170" y="594" text-anchor="middle">log-evidence fused into <tspan class="dg-zi">B</tspan><tspan class="dg-zs" dy="2">z</tspan><tspan dy="-2">(c);</tspan></text><text class="dg-note" x="170" y="610" text-anchor="middle">commit on conf, margin, views</text><text class="dg-note dg-mute" x="170" y="646" text-anchor="middle">A single shared GPU serializes all VLM</text><text class="dg-note dg-mute" x="170" y="660" text-anchor="middle">and detector inference for the whole team.</text><path class="dg-flow" d="M170 674 V702" marker-end="url(#hn-flow-tall)"></path><text class="dg-xs dg-acc" x="178" y="692">committed <tspan class="dg-zi">B</tspan><tspan class="dg-zs" dy="2">z</tspan><tspan dy="-2"></tspan></text><text class="dg-h dg-h-lilac" x="14" y="726">SHARED SEMANTIC ROOM MAP</text><use href="#hn-map" transform="translate(22 742) scale(0.26941)"></use><text class="dg-bel" x="80.7" y="770.2" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">2</tspan><tspan dy="-2">: 0.89</tspan></text><text class="dg-bel" x="169.5" y="776.4" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">4</tspan><tspan dy="-2">: 0.67</tspan></text><text class="dg-bel" x="239" y="770.2" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">6</tspan><tspan dy="-2">: 0.70</tspan></text><text class="dg-bel" x="95.5" y="877.7" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">1</tspan><tspan dy="-2">: 0.73</tspan></text><text class="dg-bel" x="169.5" y="869.9" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">3</tspan><tspan dy="-2">: 0.55</tspan></text><text class="dg-bel" x="258.3" y="877.7" text-anchor="middle"><tspan class="dg-zi">z</tspan><tspan class="dg-zs" dy="2">5</tspan><tspan dy="-2">: 0.82</tspan></text><path class="dg-flow" d="M170 912 V940" marker-end="url(#hn-flow-tall)"></path><text class="dg-xs dg-i dg-acc" x="178" y="930">belief-guided ranking</text><text class="dg-h dg-h-blue" x="14" y="964">PHASE 2 · OBJECT SEARCH</text><rect class="dg-box" x="14" y="976" width="312" height="34" rx="6"></rect><text class="dg-note" x="170" y="998" text-anchor="middle">rank rooms by <tspan class="dg-zi">B</tspan><tspan class="dg-zs" dy="2">z</tspan><tspan dy="-2"> + query q</tspan></text><path class="dg-line" d="M170 1010 V1020" marker-end="url(#hn-arrow-tall)"></path><rect class="dg-box" x="14" y="1022" width="312" height="34" rx="6"></rect><text class="dg-note" x="170" y="1044" text-anchor="middle">coverage viewpoints</text><path class="dg-line" d="M116 1056 V1066" marker-end="url(#hn-arrow-tall)"></path><rect class="dg-kv" x="14" y="1068" width="204" height="34" rx="6"></rect><text class="dg-note dg-b" x="116" y="1090" text-anchor="middle">YOLOE detect (shared GPU)</text><rect class="dg-ex" x="266" y="1068" width="60" height="32" rx="2.4"></rect><rect class="dg-tag" x="284.5" y="1075.8" width="22.9" height="18.3"></rect><text class="dg-extext" style="font-size:8.2px" x="296" y="1087.6" text-anchor="middle">drill</text><text class="dg-excap" style="font-size:7.3px" x="296" y="1109.1" text-anchor="middle">example detection</text><path class="dg-line" d="M116 1102 V1112" marker-end="url(#hn-arrow-tall)"></path><rect class="dg-box" x="14" y="1114" width="312" height="34" rx="6"></rect><text class="dg-note" x="170" y="1136" text-anchor="middle">multi-frame confirm</text><path class="dg-line" d="M170 1148 V1158" marker-end="url(#hn-arrow-tall)"></path><rect class="dg-box" x="14" y="1160" width="312" height="34" rx="6"></rect><text class="dg-note" x="170" y="1182" text-anchor="middle">approach &amp; stop</text></svg>
+            <figcaption>Overview of Hive-Nav: robots classify rooms into a shared belief map, which then guides open-vocabulary object search.</figcaption>
+          </figure>
+        </div>
+      </details>
+    </li>
+  </ol>
+</section>
+
+<section>
+  <h2>Experience</h2>
+
+  <h3>Research Assistant, Distributed and AI Systems (DAIS) Lab</h3>
+  <p class="meta">LUMS · Nov. 2025 – Present · Supervisor: <a href="https://web.lums.edu.pk/~zafar/" target="_blank" rel="noopener noreferrer">Dr. Zafar Ayyub Qazi</a></p>
+  <ul>
+    <li>Co-authored <em>Made with AI?</em> <a class="ref" href="#pub-1" title="Jump to publication [1]">[1]</a>, now under review at the ACM Web Conference (WWW) 2027.</li>
+  </ul>
+
+  <h3>Teaching Assistant, CS 5803: Applied Cryptography</h3>
+  <p class="meta">LUMS · Aug. 2026 – Present · Instructor: <a href="https://chase.lums.edu.pk/siddiqi.html" target="_blank" rel="noopener noreferrer">Dr. Muhammad Ali Siddiqi</a></p>
+  <ul>
+    <li>Selected on the basis of prior performance in the course.</li>
+    <li>Held regular office hours to support students with course concepts and assignments.</li>
+    <li>Graded all quizzes and assignments, and invigilated all quizzes and exams.</li>
+  </ul>
+
+  <h3>Teaching Assistant, CS 100: Computational Problem Solving</h3>
+  <p class="meta">LUMS · Jun. – Jul. 2026 · Instructor: <a href="https://lums.edu.pk/lums_employee/8758" target="_blank" rel="noopener noreferrer">Dr. Malik Jahan Khan</a></p>
+  <ul>
+    <li>Designed several lab exercises and quizzes used in the course.</li>
+    <li>Held regular office hours and supervised twice-weekly lab sessions.</li>
+    <li>Graded labs as part of the TA team, and invigilated all quizzes and exams.</li>
+  </ul>
+
+  <h3>Teaching Assistant, CS 382: Network-Centric Computing</h3>
+  <p class="meta">LUMS · Jan. – May 2026 · Instructor: <a href="https://lums.edu.pk/lums_employee/713" target="_blank" rel="noopener noreferrer">Dr. Zartash Afzal Uzmi</a></p>
+  <ul>
+    <li>Selected on the basis of prior performance in the course.</li>
+    <li>Held regular office hours and conducted tutorials for students.</li>
+    <li>Led grading and student queries for one programming assignment.</li>
+    <li>Assisted with invigilating and grading all quizzes and exams.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Projects</h2>
+
+  <h3>Open-Vocabulary Semantic Room Navigation</h3>
+  <p class="meta">May 2026 · EE 3002: Junior Design Studio (Robotics), team of 2 ·
+  ROS2, Nav2, YOLO-World, Python ·
+  <a class="yt-link" href="https://www.youtube.com/playlist?list=PLpWSDGkGGVYnG5sk_4Eymh97jD4NGtnED" target="_blank" rel="noopener noreferrer"><svg class="yt-logo" viewBox="0 3.5 24 17" aria-hidden="true" focusable="false"><path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Video demos</a></p>
+  <ul>
+    <li>Built a GPU-free object-search robot that classifies rooms from YOLO-World detections to skip wrong rooms early, with semantic memory that avoids re-searching on later missions.</li>
+    <li>Moved from Gazebo simulation to a RoboMaster EP Core with a Raspberry Pi 5, offloading inference to a laptop over Wi-Fi via ROS 2.</li>
+    <li>Extended into a multi-robot system, <em>Hive-Nav</em> <a class="ref" href="#pub-2" title="Jump to publication [2]">[2]</a>, now under review at ICRA 2027.</li>
+  </ul>
+
+  <h3>Evaluation of HTTP Website Communication using NTLMv2</h3>
+  <p class="meta">Nov. 2025 · CS 5803: Applied Cryptography · Wireshark, HTTP</p>
+  <ul>
+    <li>Captured a university website's plain-HTTP traffic with Wireshark to assess what a passive eavesdropper could observe.</li>
+    <li>Found that NTLMv2 protected the password, but the unencrypted session cookie left users open to session hijacking.</li>
+  </ul>
+</section>
+
+<section class="coursework">
+  <h2>Relevant Coursework</h2>
+  <div class="courses">
+    <div class="course-group">
+      <h3>Security</h3>
+      <ul>
+        <li>Applied Cryptography</li>
+        <li>Network Security</li>
+      </ul>
+    </div>
+    <div class="course-group">
+      <h3>Systems</h3>
+      <ul>
+        <li>Computer Systems</li>
+        <li>Distributed Systems</li>
+        <li>Network-Centric Computing</li>
+        <li>Operating Systems</li>
+      </ul>
+    </div>
+    <div class="course-group">
+      <h3>Theory</h3>
+      <ul>
+        <li>Algorithms</li>
+        <li>Multi-agent Systems</li>
+      </ul>
+    </div>
+    <div class="course-group">
+      <h3>Data and robotics</h3>
+      <ul>
+        <li>Big Data Analytics</li>
+        <li>Data Science</li>
+        <li>Mobile Robotics</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Technical Skills</h2>
+  <ul>
+    <li><strong>Languages:</strong> Python, C, C++, Go</li>
+    <li><strong>Developer Tools:</strong> VS Code, Git, Wireshark</li>
+    <li><strong>Robotics:</strong> ROS2, YOLO, Nav2, SLAM Toolbox</li>
+    <li><strong>Machine Learning:</strong> scikit-learn, pandas, NumPy</li>
+    <li><strong>Networking:</strong> Socket Programming (TCP/UDP), Routing (LS/DV), Threading</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Achievements and Awards</h2>
+  <ul>
+    <li>Dean's Honour List, LUMS (2024–25, 2025–26)</li>
+    <li>Full Merit Scholarship in A Levels at Lahore Grammar School Johar Town</li>
+    <li>A Levels High Achiever (2 A grades) · O Levels High Achiever (9 A* grades)</li>
+  </ul>
+</section>
+
+</main>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var button = document.getElementById("theme-toggle");
+
+    function render() {
+      var dark = root.getAttribute("data-theme") === "dark";
+      button.setAttribute("aria-checked", dark ? "true" : "false");
+    }
+
+    button.addEventListener("click", function () {
+      var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+      render();
+    });
+
+    render();
+  })();
+</script>
+
+</body>
+</html>
