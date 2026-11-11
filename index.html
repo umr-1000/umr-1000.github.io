@@ -8,7 +8,7 @@
   <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="icon" href="icons/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <meta name="description" content="Umar Habib, B.S. Computer Science student at LUMS. Interests: networks, applied cryptography, security and privacy, distributed systems, robotics.">
+  <meta name="description" content="Umar Habib, B.S. Computer Science student at LUMS. Interests: networks, security and privacy, distributed systems, robotics.">
   <!-- Start downloading the three fonts used on first paint right away -->
   <link rel="preload" href="fonts/Lora-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/Lora-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
@@ -232,6 +232,7 @@
       letter-spacing: 0.02em;
       text-transform: none;
     }
+    .pub-note { color: var(--muted); font-size: 0.85rem; white-space: nowrap; }
     .finding {
       margin: 0.6rem 0 0.5rem;
       padding: 0.6rem 0.85rem;
@@ -380,6 +381,7 @@
   </div>
   <ul>
     <li><a href="mailto:27100021@lums.edu.pk">27100021@lums.edu.pk</a></li>
+    <li><a href="UmarHabib_CV.pdf" target="_blank" rel="noopener noreferrer">CV (PDF)</a></li>
   </ul>
   <div class="icons">
     <a href="https://github.com/umr-1000/" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener noreferrer">
@@ -412,8 +414,8 @@
 </section>
 
 <section>
-  <h2>Research Interests</h2>
-  <p>Networks · Applied Cryptography · Security &amp; Privacy · Distributed Systems · Robotics</p>
+  <h2>Research &amp; Technical Interests</h2>
+  <p>Networks · Security &amp; Privacy · Distributed Systems · Robotics</p>
 </section>
 
 <section>
@@ -438,7 +440,7 @@
     <li id="pub-2">
       <div class="venue">IEEE ICRA 2027 <span class="status">Under review</span></div>
       <strong>Hive-Nav: Belief-Guided Multi-Robot Room Classification and Open-Vocabulary Object Search</strong><br>
-      Muhammad Hussain Habib Chaudhry*, <strong>Umar Habib</strong>*, Hassan Jaleel
+      Muhammad Hussain Habib Chaudhry*, <strong>Umar Habib</strong>*, Hassan Jaleel <span class="pub-note">(* equal contribution)</span>
       <p class="finding"><strong>Key finding:</strong> Fusing evidence across frames and robots raised real-world room-classification accuracy from 88.3% (single robot, single visit) to 98.3% with three robots, and all 15 physical search trials succeeded.</p>
       <details class="figure">
         <summary>Show system overview</summary>
@@ -503,8 +505,15 @@
     <li>Extended into a multi-robot system, <em>Hive-Nav</em> <a class="ref" href="#pub-2" title="Jump to publication [2]">[2]</a>, now under review at ICRA 2027.</li>
   </ul>
 
+  <h3>Scalable Parallel Data Pipeline for Genome-Scale Analysis</h3>
+  <p class="meta">May 2026 · CS 5312: Big Data Analytics, team of 3 · Python, Bash, pandas, bedtools</p>
+  <ul>
+    <li>Built a four-step pipeline over about 130.8 GB of genomic sequencing data from 927 samples, using bedtools interval arithmetic and chunked, per-sample parallel processing.</li>
+    <li>Classified 11,071 genomic regions by methylation state and found that regions overlapping transposable elements are 19.5× more likely to carry transposon-associated methylation.</li>
+  </ul>
+
   <h3>Evaluation of HTTP Website Communication using NTLMv2</h3>
-  <p class="meta">Nov. 2025 · CS 5803: Applied Cryptography · Wireshark, HTTP</p>
+  <p class="meta">Nov. 2025 · CS 5803: Applied Cryptography, team of 3 · Wireshark, HTTP</p>
   <ul>
     <li>Captured a university website's plain-HTTP traffic with Wireshark to assess what a passive eavesdropper could observe.</li>
     <li>Found that NTLMv2 protected the password, but the unencrypted session cookie left users open to session hijacking.</li>
